@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelime ve Harf Analizi</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart', 'bar']});
+
+        function analyzeText() {
+            const inputText = document.getElementById("textInput").value;
+            const words = inputText.match(/\w+/g);
+            const wordCount = {};
+            const letterCount = {};
+
+            // Kelime sayısını hesapla
+            if (words) {
+                words.forEach(word => {
+                    word = word.toLowerCase();
+                    wordCount[word] = (wordCount[word] || 0) + 1;
+                });
+            }
+
+            // Türkçe harflerin sayısını hesapla
+            const letters = "abcçdefgğhıijklmnoöprsştuüvwxyz";
+            for (let letter of letters) {
+                letterCount[letter] = (inputText.toLowerCase().match(new RegExp(letter, 'g')) || []).length;
+            }
+
+            drawCharts(wordCount, letterCount);
+        }
+
+        function drawCharts(wordCount, letterCount) {
+            const wordData = new google.visualization.DataTable();
+            wordData.addColumn('string', 'Kelime');
+            wordData.addColumn('number', 'Kullanım Sayısı');
+            for (const word in wordCount) {
+                wordData.addRow([word, wordCount[word]]);
+            }
+
+            const wordChart = new google.visualization.PieChart(document.getElementById('wordChart'));
+            wordChart.draw(wordData, { title: 'Kelime Kullanım Sayısı' });
+
+            const letterData = new google.visualization.DataTable();
+            letterData.addColumn('string', 'Harf');
+            letterData.addColumn('number', 'Kullanım Sayısı');
+            for (const letter in letterCount) {
+                letterData.addRow([letter, letterCount[letter]]);
+            }
+
+            const letterChart = new google.visualization.BarChart(document.getElementById('letterChart'));
+            letterChart.draw(letterData, { title: 'Türkçe Harf Kullanım Sayısı', hAxis: { title: 'Kullanım Sayısı' } });
+        }
+    </script>
+</head>
+<body>
+    <h1>Kelime ve Harf Analizi</h1>
+    <textarea id="textInput" rows="10" cols="50" placeholder="Metni buraya girin..."></textarea><br>
+    <button onclick="analyzeText()">Analiz Et</button>
+    <div id="wordChart" style="width: 100%; height: 400px;"></div>
+    <div id="letterChart" style="width: 100%; height: 400px;"></div>
+</body>
+</html>

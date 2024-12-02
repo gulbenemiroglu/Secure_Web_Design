@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="UTF-8">
+
+ 
+<head> 
+    <meta charset="UTF-8">
+    <title>Memory Game</title>
+    <script>
+        var originalFruits = [
+            "1.png", "5.png", "8.png", "7.png", "6.png", "4.png", 
+            "2.png", "3.png", "2.png", "6.png", "7.png", "1.png", 
+            "4.png", "8.png", "5.png", "3.png"
+        ];
+
+        var fruits, round, pic, firstPicId, clickCount, matchedCards, totalPairs;
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+            }
+        }
+
+        function initGame() {
+            fruits = [...originalFruits];
+            shuffle(fruits);
+
+            round = 1;
+            pic = null;
+            firstPicId = null;
+            clickCount = 0;
+            matchedCards = 0;
+            totalPairs = originalFruits.length / 2;
+
+            document.getElementById("clickCount").innerText = `Tıklama Sayısı: ${clickCount}`;
+
+            for (let i = 1; i <= 16; i++) {
+                document.getElementById(i + "").src = "lock.png";
+            }
+        }
+
+        function showCart(picId) {
+            clickCount++; 
+            document.getElementById("clickCount").innerText = `Tıklama Sayısı: ${clickCount}`; 
+
+            var index = picId - 1;
+            document.getElementById(picId + "").src = fruits[index];
+
+            if (round == 1) {
+                round = 2;
+                pic = picId;
+                firstPicId = picId; 
+            } else {
+                
+                if (fruits[index] === fruits[parseInt(pic) - 1]) {
+                    
+                    matchedCards += 1;
+                    round = 1;
+                    pic = null; 
+                    
+                   
+                    if (matchedCards === totalPairs) {
+                        setTimeout(() => {
+                            alert("Tebrikler! Tüm kartları eşleştirdiniz!");
+                        }, 500); 
+                    }
+                } else {
+                    setTimeout(() => {
+                        document.getElementById(picId + "").src = "lock.png";
+                        document.getElementById(pic + "").src = "lock.png";
+                        round = 1;
+                        pic = null; 
+                    }, 1000);
+                }
+            }
+        }
+    </script>
+</head>
+<body onload="initGame()">
+
+    <h1>Memory Game</h1>
+    <div id="clickCount" style="font-size: 20px; margin-bottom: 20px;">Tıklama Sayısı: 0</div>
+    <button onclick="initGame()" style="margin-bottom: 20px;">Yeniden Başlat</button>
+
+    <table>
+        <tr>
+            <td><img src="lock.png" width="80px" onclick="showCart(1)" id="1"/></td>
+            <td><img src="lock.png" width="80px" onclick="showCart(2)" id="2"/></td>
+            <td><img src="lock.png" width="80px" onclick="showCart(3)" id="3"/></td>
+            <td><img src="lock.png" width="80px" onclick="showCart(4)" id="4"/></td>
+        </tr>
+        <tr>
+            <td><img src="lock.png" width="80px" onclick="showCart(5)" id="5"/></td>
+            <td><img src="lock.png" width="80px" onclick="showCart(6)" id="6"/></td>
+            <td><img src="lock.png" width="80px" onclick="showCart(7)" id="7"/></td>
+            <td><img src="lock.png" width="80px" onclick="showCart(8)" id="8"/></td>
+        </tr>
+        <tr>
+            <td><img src="lock.png" width="80px" onclick="showCart(9)" id="9"/></td>
+            <td><img src="lock.png" width="80px" onclick="showCart(10)" id="10"/></td>
+            <td><img src="lock.png" width="80px" onclick="showCart(11)" id="11"/></td>
+            <td><img src="lock.png" width="80px" onclick="showCart(12)" id="12"/></td>
+        </tr>
+        <tr>
+            <td><img src="lock.png" width="80px" onclick="showCart(13)" id="13"/></td>
+            <td><img src="lock.png" width="80px" onclick="showCart(14)" id="14"/></td>
+            <td><img src="lock.png" width="80px" onclick="showCart(15)" id="15"/></td>
+            <td><img src="lock.png" width="80px" onclick="showCart(16)" id="16"/></td>
+        </tr>
+    </table>
+
+    <a href="./help.html">YARDIM</a>
+
+</body>
+</html>
