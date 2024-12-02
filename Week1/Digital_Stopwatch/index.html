@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+var count1=0;
+var count2=0;
+var count3=0;
+var isCalled=false;
+let timerInterval = null;
+
+function fotmatTime(value){
+    if(value<10) return "0"+ value;
+    else return value;
+}
+
+function updateDisplay() {
+    document.getElementById("0").innerHTML=fotmatTime(count1);
+    document.getElementById("1").innerHTML=fotmatTime(count2);
+    document.getElementById("2").innerHTML=fotmatTime(count3);
+}
+function myTimer() {
+ 
+ document.getElementById("0").innerHTML = count1;
+ count1++;
+ if(count1>59){
+    count1=0;
+    count2++;
+ }
+ if(count2>59){
+    count2=0;
+    count3++;
+ }
+ if(count3>23){
+    count3=0;
+ } 
+
+ updateDisplay();
+}
+
+function myFunctionStart()
+ {
+    if(isCalled) return;
+    timerInterval= setInterval(myTimer, 1000);
+    isCalled=true;
+ }
+
+ function myFunctionReset()
+ {
+    clearInterval(timerInterval);
+    isCalled=false;
+    count1=0;
+    count2=0;
+    count3=0;
+    updateDisplay();
+ }
+
+</script>
+<div style="display: flex; justify-content: center; margin: 50px;">
+    <div id="2" style="font-size:556%;  text-align:center;">00</div>
+    <div  style="font-size:556%;  text-align:center;">:</div>
+    <div id="1" style="font-size:556%;  text-align:center;">00</div>
+    <div  style="font-size:556%;  text-align:center;">:</div>
+    <div id="0" style="font-size:556%;  text-align:center;">00</div>
+</div>
+<div style="display: flex; justify-content: center">
+    <button type="button" style="margin-right: 16px;" onclick='myFunctionStart()'>UP</button>
+    <button type="button" onclick='myFunctionReset()'>RESET</button>
+</div>
+
+</body>
+</html>

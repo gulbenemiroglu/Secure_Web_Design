@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+  function myFunction() { 
+    let userName = document.getElementsByName("firstname")[0].value;
+    console.log(userName)
+    let password = document.getElementsByName("password")[0].value;
+    console.log(password)
+
+
+    if (userName === "gulben" && password === "sifre123") {
+      document.getElementById("result").style.color = "blue";
+      document.getElementById("result").innerHTML = "Giriş Başarılı";
+    } 
+    else if(userName !== "gulben"){
+      document.getElementById("result").style.color = "red";
+      document.getElementById("result").innerHTML = "Kullanıcı adı hatalı!";
+    }
+    else{
+      document.getElementById("result").style.color = "red";
+      document.getElementById("result").innerHTML = "Şifre hatalı!";
+    }
+  }
+  </script>
+</head>
+<body>
+  <div  style="text-align:center; margin-top:100px">
+    <form action="/action_page.php" method="get" target="_blank">
+      User Name
+      <br>
+      <input type="text" name="firstname" >
+      <br>
+      Password
+      <br>
+      <input type="password" name="password" >
+    </form>
+    <button type="button" onclick='myFunction()'>Sign In</button>
+ </div>
+ 
+ <div id="result" style="text-align:center; margin-top:100px">
+ sonuç
+ </div>
+</body>
+</html>
