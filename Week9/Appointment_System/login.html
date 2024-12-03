@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <h2>Giriş Yap</h2>
+    <form id="loginForm">
+      <label for="email">E-posta:</label><br>
+      <input type="email" id="email" name="email" required style="margin-bottom: 1rem;"><br>
+      <label for="password">Şifre:</label><br>
+      <input type="password" id="password" name="password" required style="margin-bottom: 1rem;"><br><br>
+      <input type="submit" value="Giriş Yap">
+    </form>
+    <div style="margin-top:50px;">
+      <a href="/register">Kayıt Ol</a>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="responseModalLabel">Bilgi</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+        </div>
+        <div class="modal-body" id="modalMessage"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('loginForm').onsubmit = function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/submitlogin", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          const modalMessage = document.getElementById('modalMessage');
+          if (xhr.status === 200) {
+            modalMessage.textContent = "Giriş başarılı! Profil sayfasına yönlendiriliyorsunuz.";
+            const modal = new bootstrap.Modal(document.getElementById('responseModal'));
+            modal.show();
+            setTimeout(() => {
+              window.location.href = "/profile";
+            }, 2000);
+          } else {
+            modalMessage.textContent = "Geçersiz e-posta veya şifre!";
+            const modal = new bootstrap.Modal(document.getElementById('responseModal'));
+            modal.show();
+          }
+        }
+      };
+
+      const data = JSON.stringify({ email, password });
+      xhr.send(data);
+    };
+  </script>
+</body>
+</html>
