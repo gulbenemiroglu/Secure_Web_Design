@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yeni Randevu</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5">
+    <h2 class="mb-4">Yeni Randevu Al</h2>
+    <form id="appointmentForm">
+      <div class="mb-3">
+        <label for="name" class="form-label">Ad:</label>
+        <input type="text" id="name" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="family" class="form-label">Soyad:</label>
+        <input type="text" id="family" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="rdate" class="form-label">Tarih:</label>
+        <input type="date" id="rdate" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="time" class="form-label">Saat:</label>
+        <input type="time" id="time" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Açıklama:</label>
+        <textarea id="description" class="form-control" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-success w-100">Kaydet</button>
+    </form>
+  </div>
+  <script>
+    const token = localStorage.getItem('token');
+
+    document.getElementById('appointmentForm').onsubmit = function (e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const family = document.getElementById('family').value;
+      const rdate = document.getElementById('rdate').value;
+      const time = document.getElementById('time').value;
+      const description = document.getElementById('description').value;
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/addrecord', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          const response = JSON.parse(xhr.responseText);
+          alert(response.message);
+
+          if (xhr.status === 200) {
+            window.location.href = '/list';
+          }
+        }
+      };
+
+      const data = JSON.stringify({ name, family, rdate, time, description });
+      xhr.send(data);
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
