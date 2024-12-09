@@ -25,7 +25,7 @@
 
   <script>
     document.getElementById('loginForm').onsubmit = function (e) {
-      e.preventDefault();
+      e.preventDefault(); // Formun varsayılan davranışını durdur
 
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
@@ -37,17 +37,18 @@
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
           const response = JSON.parse(xhr.responseText);
-          alert(response.message);
-
-          if (xhr.status === 200 && response.token) {
-            localStorage.setItem('token', response.token); // Token'ı sakla
-            window.location.href = '/profile';
+          if (xhr.status === 200) {
+            alert('Giriş başarılı!');
+            /* localStorage.setItem('token', response.token); // Token'ı sakla */
+            
+            window.location.href = '/profile'; // Profil sayfasına yönlendir
+          } else {
+            alert(response.message); // Hata mesajını göster
           }
         }
       };
 
       const data = JSON.stringify({ email, password });
-      
       xhr.send(data);
     };
   </script>

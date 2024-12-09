@@ -148,7 +148,7 @@ app.get('/logout', (req, res) => {
 });
 
 // Sunucuyu başlat
-const PORT = 8081;
+const PORT = 8090;
 app.listen(PORT, () => {
     console.log(`Sunucu http://localhost:${PORT} üzerinde çalışıyor.`);
 });

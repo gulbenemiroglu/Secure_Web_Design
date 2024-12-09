@@ -18,18 +18,40 @@
   </div>
 
   <script>
-    function logout() {
-      localStorage.removeItem('token'); // Token'ı sil
+
+function logout() {
+  document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
       alert('Oturumunuz kapatıldı!');
       window.location.href = '/login';
     }
-
     document.addEventListener('DOMContentLoaded', function () {
       const token = localStorage.getItem('token');
+  
       if (!token) {
         alert('Giriş yapmanız gerekiyor!');
         window.location.href = '/login';
+        return;
       }
+
+      
+  
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', '/profile', true);
+      xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+  
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 401 || xhr.status === 403) {
+            alert('Token geçersiz veya süresi dolmuş. Lütfen tekrar giriş yapın.');
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+          } else if (xhr.status === 200) {
+            console.log('Profil sayfasına başarıyla erişildi.');
+          }
+        }
+      };
+  
+      xhr.send();
     });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
